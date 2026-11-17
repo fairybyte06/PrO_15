@@ -1,0 +1,2102 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CollabNest | Student Collaboration</title>
+
+<style>
+
+/* =========================
+   1. THEME VARIABLES
+========================= */
+
+:root {
+    color-scheme: light;
+    --bg: #f4f7fc;
+    --surface: #ffffff;
+    --surface-2: #edf3fa;
+    --text: #26364a;
+    --muted: #718096;
+    --primary: #2468a8;
+    --primary-dark: #174a7e;
+    --border: #e0e8f1;
+    --shadow: 0 5px 22px rgba(29, 59, 91, 0.07);
+    --success: #16845b;
+    --danger: #c34c4c;
+}
+
+body.dark-theme {
+    color-scheme: dark;
+    --bg: #111c2b;
+    --surface: #1c2b3e;
+    --surface-2: #263950;
+    --text: #e8eff8;
+    --muted: #a6b6c9;
+    --primary: #76b7f1;
+    --primary-dark: #a5d2ff;
+    --border: #344960;
+    --shadow: 0 5px 22px rgba(0, 0, 0, 0.2);
+    --success: #65c99b;
+    --danger: #f18b8b;
+}
+
+/* =========================
+   2. GENERAL STYLING
+========================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 85px;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    transition: background 0.25s, color 0.25s;
+}
+
+button, input, textarea, select {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+.container {
+    width: min(1120px, 92%);
+    margin: auto;
+}
+
+.section {
+    padding: 65px 0;
+}
+
+.section-heading {
+    margin-bottom: 25px;
+}
+
+.section-heading h2 {
+    font-size: 26px;
+    color: var(--text);
+    margin-bottom: 5px;
+}
+
+.section-heading p {
+    color: var(--muted);
+}
+
+/* =========================
+   3. HEADER
+========================= */
+
+header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-inner {
+    min-height: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.logo span {
+    color: var(--text);
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+#clock {
+    font-size: 12px;
+    color: var(--muted);
+}
+
+/* Theme icons */
+
+.theme-switcher {
+    display: flex;
+    gap: 7px;
+}
+
+.theme-icon {
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    background: var(--surface-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    transition: 0.2s;
+}
+
+.theme-icon svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: var(--text);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.theme-icon:hover,
+.theme-icon.active {
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+.theme-icon:hover svg,
+.theme-icon.active svg {
+    stroke: white;
+}
+
+/* =========================
+   4. NAVIGATION
+========================= */
+
+nav {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    overflow-x: auto;
+    padding: 12px 0;
+}
+
+nav a {
+    color: var(--muted);
+    font-size: 13px;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: 0.2s;
+}
+
+nav a:hover {
+    color: var(--primary);
+}
+
+/* =========================
+   5. BUTTONS
+========================= */
+
+.btn {
+    display: inline-block;
+    border: none;
+    background: var(--primary);
+    color: white;
+    padding: 11px 19px;
+    border-radius: 7px;
+    font-size: 14px;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.btn:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background: var(--surface-2);
+    color: var(--text);
+    border: 1px solid var(--border);
+}
+
+.btn-secondary:hover {
+    background: var(--border);
+    color: var(--text);
+}
+
+.btn-small {
+    padding: 7px 11px;
+    font-size: 12px;
+    margin: 3px;
+}
+
+button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* =========================
+   6. HERO SECTION
+========================= */
+
+.hero {
+    padding: 65px 0;
+}
+
+.hero-box {
+    background: linear-gradient(120deg, #174a7e, #347fb9);
+    color: white;
+    border-radius: 16px;
+    padding: 55px 45px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+    overflow: hidden;
+}
+
+.hero-content {
+    max-width: 650px;
+}
+
+.hero-label {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    margin-bottom: 15px;
+}
+
+.hero h1 {
+    font-size: clamp(30px, 5vw, 46px);
+    line-height: 1.2;
+    margin-bottom: 15px;
+}
+
+.hero p {
+    color: #e2efff;
+    margin-bottom: 23px;
+    max-width: 530px;
+}
+
+.hero .btn {
+    background: white;
+    color: #174a7e;
+}
+
+.hero .btn:hover {
+    background: #e5f1ff;
+}
+
+.hero-art {
+    font-size: 105px;
+    opacity: 0.9;
+    padding: 15px;
+}
+
+/* =========================
+   7. DASHBOARD STATISTICS
+========================= */
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 35px;
+}
+
+.stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+}
+
+.stat-card p {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.stat-card h3 {
+    font-size: 29px;
+    color: var(--primary);
+    margin-top: 7px;
+}
+
+/* =========================
+   8. FEATURE CARDS
+========================= */
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+.feature-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 23px;
+    box-shadow: var(--shadow);
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary);
+}
+
+.feature-icon {
+    width: 43px;
+    height: 43px;
+    border-radius: 10px;
+    background: var(--surface-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 21px;
+    margin-bottom: 15px;
+}
+
+.feature-card h3 {
+    margin-bottom: 7px;
+    font-size: 17px;
+}
+
+.feature-card p {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+/* =========================
+   9. CONTENT PANELS
+========================= */
+
+.panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: var(--shadow);
+}
+
+.panel h3 {
+    margin-bottom: 15px;
+}
+
+.section-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 18px;
+}
+
+/* =========================
+   10. FORMS
+========================= */
+
+form {
+    width: 100%;
+}
+
+label {
+    display: block;
+    font-size: 13px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+input, textarea, select {
+    width: 100%;
+    padding: 12px;
+    margin: 7px 0 12px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    background: var(--bg);
+    color: var(--text);
+    outline: none;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(36, 104, 168, 0.1);
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: var(--muted);
+}
+
+textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+/* =========================
+   11. TASK MANAGER
+========================= */
+
+.task-input-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.task-input-row input {
+    flex: 1;
+    margin: 0;
+}
+
+.task-input-row button {
+    white-space: nowrap;
+}
+
+.progress-area {
+    margin: 20px 0;
+}
+
+.progress-info {
+    display: flex;
+    justify-content: space-between;
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 8px;
+}
+
+.progress-track {
+    width: 100%;
+    height: 9px;
+    background: var(--surface-2);
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    width: 0%;
+    height: 100%;
+    background: #249c76;
+    border-radius: 20px;
+    transition: width 0.3s;
+}
+
+.task-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px;
+    background: var(--surface-2);
+    border-radius: 8px;
+    margin: 9px 0;
+}
+
+.task-name {
+    overflow-wrap: anywhere;
+}
+
+.task-name.completed {
+    text-decoration: line-through;
+    color: var(--muted);
+}
+
+.task-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.task-actions button {
+    margin: 2px;
+}
+
+.task-empty {
+    color: var(--muted);
+    padding: 15px 0;
+    font-size: 14px;
+}
+
+/* =========================
+   12. QUIZ
+========================= */
+
+.quiz-question {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 15px 0;
+}
+
+.option {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin: 9px 0;
+    background: var(--surface-2);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    text-align: left;
+}
+
+.option:hover:not(:disabled) {
+    border-color: var(--primary);
+    background: var(--surface);
+}
+
+#feedback {
+    margin: 12px 0;
+    font-weight: bold;
+    color: var(--success);
+}
+
+#quizScore {
+    color: var(--primary);
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+/* =========================
+   13. API AND MESSAGES
+========================= */
+
+.api-description {
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 15px;
+}
+
+.result-message {
+    margin: 12px 0;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.muted {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+/* =========================
+   14. REMINDER AND ACTIVITY
+========================= */
+
+.activity-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+#activityMessage,
+#reminderStatus {
+    margin: 12px 0;
+    color: var(--primary);
+}
+
+/* =========================
+   15. CONTACT AND FOOTER
+========================= */
+
+footer {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    text-align: center;
+    padding: 25px;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+/* =========================
+   16. TOAST NOTIFICATION
+========================= */
+
+#notification {
+    position: fixed;
+    bottom: 22px;
+    right: 22px;
+    background: #174a7e;
+    color: white;
+    padding: 14px 20px;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    z-index: 200;
+    opacity: 0;
+    transform: translateY(15px);
+    pointer-events: none;
+    transition: 0.3s;
+    max-width: min(350px, 90vw);
+}
+
+#notification.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* =========================
+   17. RESPONSIVE DESIGN
+========================= */
+
+@media (max-width: 800px) {
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .feature-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .hero-box {
+        padding: 40px 30px;
+    }
+
+    .hero-art {
+        font-size: 70px;
+    }
+}
+
+@media (max-width: 550px) {
+
+    .header-inner {
+        flex-wrap: wrap;
+        padding: 12px 0;
+    }
+
+    .header-right {
+        gap: 8px;
+    }
+
+    #clock {
+        display: none;
+    }
+
+    .nav-links {
+        gap: 17px;
+    }
+
+    .hero {
+        padding: 30px 0;
+    }
+
+    .hero-box {
+        padding: 35px 23px;
+    }
+
+    .hero-art {
+        display: none;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .stat-card {
+        padding: 14px;
+    }
+
+    .stat-card h3 {
+        font-size: 24px;
+    }
+
+    .feature-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .task-input-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .task-input-row input {
+        width: 100%;
+    }
+
+    .task-item {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .task-actions {
+        justify-content: flex-start;
+    }
+
+    .panel {
+        padding: 18px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header>
+    <div class="container header-inner">
+
+        <a href="#home" class="logo">
+            Collab<span>Nest.</span>
+        </a>
+
+        <div class="header-right">
+
+            <p id="clock"></p>
+
+            <!-- THEME SWITCHER -->
+
+            <div class="theme-switcher">
+
+                <button class="theme-icon"
+                id="lightButton"
+                onclick="setTheme('light')"
+                title="Light Mode"
+                aria-label="Switch to Light Mode">
+
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <circle cx="12" cy="12" r="4"></circle>
+                        <path d="M12 2v2 M12 20v2
+                        M4.93 4.93l1.42 1.42
+                        M17.65 17.65l1.42 1.42
+                        M2 12h2 M20 12h2
+                        M4.93 19.07l1.42-1.42
+                        M17.65 6.35l1.42-1.42"></path>
+                    </svg>
+
+                </button>
+
+                <button class="theme-icon"
+                id="darkButton"
+                onclick="setTheme('dark')"
+                title="Dark Mode"
+                aria-label="Switch to Dark Mode">
+
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M20.5 15.5A8.5 8.5 0 0 1 8.5 3.5
+                        8.5 8.5 0 1 0 20.5 15.5Z"></path>
+                    </svg>
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+</header>
+
+<!-- =========================
+     NAVIGATION
+========================= -->
+
+<nav>
+    <div class="container nav-links">
+        <a href="#home">Home</a>
+        <a href="#dashboard">Dashboard</a>
+        <a href="#features">Features</a>
+        <a href="#register">Register</a>
+        <a href="#tasks">Tasks</a>
+        <a href="#api">API Workspace</a>
+        <a href="#quiz">Quiz</a>
+        <a href="#activity">Activity</a>
+        <a href="#contact">Contact</a>
+    </div>
+</nav>
+
+<main>
+
+<!-- =========================
+     HERO SECTION
+========================= -->
+
+<section class="hero" id="home">
+
+    <div class="container">
+
+        <div class="hero-box">
+
+            <div class="hero-content">
+
+                <span class="hero-label">
+                    YOUR STUDENT COLLABORATION SPACE
+                </span>
+
+                <h1 id="welcome">
+                    Work Together. Achieve More.
+                </h1>
+
+                <p>
+                    Bring your ideas, teams and tasks together.
+                    Stay organised, collaborate with others and
+                    make every project count with CollabNest.
+                </p>
+
+                <a href="#register" class="btn">
+                    Get Started →
+                </a>
+
+            </div>
+
+            <div class="hero-art" aria-hidden="true">
+                ✦
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- =========================
+     DASHBOARD
+========================= -->
+
+<section class="container" id="dashboard">
+
+    <div class="section-heading">
+
+        <h2>Your Dashboard</h2>
+
+        <p>A quick overview of your workspace.</p>
+
+    </div>
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+            <p>Total Tasks</p>
+            <h3 id="totalStat">0</h3>
+        </div>
+
+        <div class="stat-card">
+            <p>Completed Tasks</p>
+            <h3 id="completedStat">0</h3>
+        </div>
+
+        <div class="stat-card">
+            <p>Pending Tasks</p>
+            <h3 id="pendingStat">0</h3>
+        </div>
+
+        <div class="stat-card">
+            <p>Quiz Score</p>
+            <h3 id="scoreStat">0/10</h3>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- =========================
+     FEATURES
+========================= -->
+
+<section class="container section" id="features">
+
+    <div class="section-heading">
+
+        <h2>Explore CollabNest</h2>
+
+        <p>Everything you need to organise your student life.</p>
+
+    </div>
+
+    <div class="feature-grid">
+
+        <div class="feature-card">
+            <div class="feature-icon">👥</div>
+            <h3>Team Collaboration</h3>
+            <p>Connect with teammates and work together on projects.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">✓</div>
+            <h3>Task Management</h3>
+            <p>Organise your work and track your progress.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">?</div>
+            <h3>Learning Quiz</h3>
+            <p>Test your Web Technology knowledge with interactive questions.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">↗</div>
+            <h3>API Workspace</h3>
+            <p>Explore GET, POST, PATCH and DELETE operations.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">◷</div>
+            <h3>Smart Reminders</h3>
+            <p>Set reminders for important tasks and activities.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">◴</div>
+            <h3>Activity Tracker</h3>
+            <p>Keep track of your study and work sessions.</p>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- =========================
+     REGISTRATION
+========================= -->
+
+<section class="container section" id="register">
+
+    <div class="section-heading">
+        <h2>Join CollabNest</h2>
+        <p>Create your student team profile.</p>
+    </div>
+
+    <div class="panel">
+
+        <form id="registerForm">
+
+            <label for="name">Full Name</label>
+            <input type="text" id="name"
+            placeholder="Enter your name" required>
+
+            <label for="email">Email Address</label>
+            <input type="email" id="email"
+            placeholder="Enter your email" required>
+
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone"
+            placeholder="10 digit phone number"
+            pattern="[0-9]{10}" required>
+
+            <label for="team">Team Name</label>
+            <input type="text" id="team"
+            placeholder="Enter your team name" required>
+
+            <label for="size">Team Size</label>
+            <input type="number" id="size"
+            min="1" max="20"
+            placeholder="Enter team size" required>
+
+            <label for="description">Project Description</label>
+            <textarea id="description"
+            placeholder="Tell us about your project"
+            required></textarea>
+
+            <button class="btn" type="submit">
+                Create Account
+            </button>
+
+        </form>
+
+        <p id="registerResult" class="result-message"></p>
+
+    </div>
+
+</section>
+
+<!-- =========================
+     TASK MANAGER
+========================= -->
+
+<section class="container section" id="tasks">
+
+    <div class="section-heading">
+        <h2>Task Manager</h2>
+        <p>Plan your work and keep everything organised.</p>
+    </div>
+
+    <div class="panel">
+
+        <div class="task-input-row">
+
+            <input type="text" id="taskInput"
+            placeholder="What do you need to do?">
+
+            <button class="btn" onclick="addTask()">
+                + Add Task
+            </button>
+
+        </div>
+
+        <div class="progress-area">
+
+            <div class="progress-info">
+                <span>Task Progress</span>
+                <span id="progressText">0% completed</span>
+            </div>
+
+            <div class="progress-track">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+        </div>
+
+        <p class="muted" id="taskCount">Total Tasks: 0</p>
+
+        <div id="taskList"></div>
+
+    </div>
+
+</section>
+
+<!-- =========================
+     API WORKSPACE
+========================= -->
+
+<section class="container section" id="api">
+
+    <div class="section-heading">
+        <h2>API Workspace</h2>
+        <p>Experiment with basic API operations.</p>
+    </div>
+
+    <div class="panel">
+
+        <p class="api-description">
+            JSONPlaceholder is used here as a demonstration API.
+            Internet access is required.
+        </p>
+
+        <button class="btn" onclick="loadTasks()">
+            GET - Load Tasks
+        </button>
+
+        <form id="apiForm">
+
+            <label for="apiTitle">New Task</label>
+
+            <input type="text" id="apiTitle"
+            placeholder="Enter a task for the API"
+            required>
+
+            <button class="btn" type="submit">
+                POST - Add Task
+            </button>
+
+        </form>
+
+        <button class="btn btn-secondary"
+        onclick="apiAction('PATCH')">
+            PATCH - Update First Task
+        </button>
+
+        <button class="btn btn-secondary"
+        onclick="apiAction('DELETE')">
+            DELETE - Delete First Task
+        </button>
+
+        <p id="apiStatus" class="result-message"></p>
+
+        <div id="apiTasks"></div>
+
+    </div>
+
+</section>
+
+<!-- =========================
+     WEB TECHNOLOGY QUIZ
+========================= -->
+
+<section class="container section" id="quiz">
+
+    <div class="section-heading">
+        <h2>Web Technology Quiz</h2>
+        <p>Challenge yourself and test your knowledge!</p>
+    </div>
+
+    <div class="panel">
+
+        <h3 id="questionNumber">Question 1</h3>
+
+        <p class="quiz-question" id="questionText"></p>
+
+        <div id="options"></div>
+
+        <p id="feedback"></p>
+
+        <p id="quizScore">Score: 0</p>
+
+        <button class="btn" id="nextButton"
+        onclick="nextQuestion()">
+            Next Question →
+        </button>
+
+        <button class="btn btn-secondary"
+        onclick="restartQuiz()">
+            Restart Quiz
+        </button>
+
+    </div>
+
+</section>
+
+<!-- =========================
+     REMINDERS AND ACTIVITY
+========================= -->
+
+<section class="container section" id="activity">
+
+    <div class="section-heading">
+        <h2>Stay Productive</h2>
+        <p>Set reminders and track your work sessions.</p>
+    </div>
+
+    <div class="section-content">
+
+        <div class="panel">
+
+            <h3>Study Reminder</h3>
+
+            <p class="muted">
+                Set a reminder using seconds.
+            </p>
+
+            <input type="number" id="reminder"
+            min="1" placeholder="Enter time in seconds">
+
+            <button class="btn" onclick="setReminder()">
+                Set Reminder
+            </button>
+
+            <button class="btn btn-secondary"
+            onclick="cancelReminder()">
+                Cancel
+            </button>
+
+            <p id="reminderStatus"></p>
+
+        </div>
+
+        <div class="panel">
+
+            <h3>Activity Tracker</h3>
+
+            <p class="muted">
+                Track how long you work on your tasks.
+            </p>
+
+            <h2 id="activityMessage">
+                0 seconds
+            </h2>
+
+            <div class="activity-buttons">
+
+                <button class="btn" onclick="startActivity()">
+                    Start Activity
+                </button>
+
+                <button class="btn btn-secondary"
+                onclick="stopActivity()">
+                    Stop Activity
+                </button>
+
+                <button class="btn btn-secondary"
+                onclick="resetActivity()">
+                    Reset
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- =========================
+     CONTACT
+========================= -->
+
+<section class="container section" id="contact">
+
+    <div class="section-heading">
+        <h2>Get in Touch</h2>
+        <p>Have a question or suggestion? Send us a message.</p>
+    </div>
+
+    <div class="panel">
+
+        <form id="contactForm">
+
+            <label for="contactName">Your Name</label>
+
+            <input type="text" id="contactName"
+            placeholder="Enter your name" required>
+
+            <label for="contactMessage">Your Message</label>
+
+            <textarea id="contactMessage"
+            placeholder="Write your message here"
+            required></textarea>
+
+            <button class="btn" type="submit">
+                Send Message
+            </button>
+
+        </form>
+
+        <p id="contactResult" class="result-message"></p>
+
+    </div>
+
+</section>
+
+</main>
+
+<!-- FOOTER -->
+
+<footer>
+    <p><strong>CollabNest</strong></p>
+    <p>Connect. Collaborate. Create.</p>
+    <p>© 2026 CollabNest | Student Collaboration Platform</p>
+</footer>
+
+<!-- TOAST NOTIFICATION -->
+
+<div id="notification" role="status" aria-live="polite"></div>
+
+
+<script>
+
+/* =========================
+   1. THEME MANAGEMENT
+========================= */
+
+function setTheme(theme) {
+
+    document.body.classList.toggle(
+        "dark-theme",
+        theme === "dark"
+    );
+
+    localStorage.setItem("selectedTheme", theme);
+
+    document.querySelector("#lightButton")
+        .classList.toggle("active", theme === "light");
+
+    document.querySelector("#darkButton")
+        .classList.toggle("active", theme === "dark");
+
+}
+
+let savedTheme = localStorage.getItem("selectedTheme");
+
+if (savedTheme === "light" || savedTheme === "dark") {
+
+    setTheme(savedTheme);
+
+} else if (
+    window.matchMedia &&
+    window.matchMedia("(prefers-color-scheme: dark)").matches
+) {
+
+    setTheme("dark");
+
+} else {
+
+    setTheme("light");
+
+}
+
+
+/* =========================
+   2. SYSTEM CLOCK
+========================= */
+
+function updateClock() {
+
+    document.querySelector("#clock").textContent =
+        new Date().toLocaleString();
+
+}
+
+updateClock();
+
+setInterval(updateClock, 1000);
+
+
+/* =========================
+   3. NOTIFICATIONS
+========================= */
+
+let notificationTimer;
+
+function showNotification(message) {
+
+    let notification =
+        document.querySelector("#notification");
+
+    notification.textContent = message;
+
+    notification.classList.add("show");
+
+    clearTimeout(notificationTimer);
+
+    notificationTimer = setTimeout(function() {
+
+        notification.classList.remove("show");
+
+    }, 2500);
+
+}
+
+
+/* =========================
+   4. REGISTRATION
+========================= */
+
+document.querySelector("#registerForm").onsubmit =
+function(event) {
+
+    event.preventDefault();
+
+    let phone = document.querySelector("#phone").value;
+
+    let size = Number(document.querySelector("#size").value);
+
+    if (!/^[0-9]{10}$/.test(phone)) {
+
+        document.querySelector("#registerResult").textContent =
+            "Please enter a valid 10 digit phone number.";
+
+        return;
+
+    }
+
+    if (size < 1 || size > 20) {
+
+        document.querySelector("#registerResult").textContent =
+            "Team size must be between 1 and 20.";
+
+        return;
+
+    }
+
+    let name = document.querySelector("#name").value;
+
+    document.querySelector("#registerResult").textContent =
+        "Welcome " + name + "! Registration successful.";
+
+    showNotification("Registration successful!");
+
+    this.reset();
+
+};
+
+
+/* =========================
+   5. TASK MANAGER
+========================= */
+
+let tasks = [];
+
+try {
+    let savedTasks = JSON.parse(
+        localStorage.getItem("collabTasks")
+    );
+
+    if (Array.isArray(savedTasks)) {
+        tasks = savedTasks;
+    }
+} catch (error) {
+    tasks = [];
+}
+
+function saveTasks() {
+
+    localStorage.setItem(
+        "collabTasks",
+        JSON.stringify(tasks)
+    );
+
+}
+
+function updateDashboard() {
+
+    let total = tasks.length;
+
+    let completed = tasks.filter(
+        task => task.done
+    ).length;
+
+    let pending = total - completed;
+
+    let percentage = total === 0 ?
+        0 : Math.round((completed / total) * 100);
+
+    document.querySelector("#totalStat").textContent = total;
+
+    document.querySelector("#completedStat").textContent =
+        completed;
+
+    document.querySelector("#pendingStat").textContent = pending;
+
+    document.querySelector("#taskCount").textContent =
+        "Total Tasks: " + total;
+
+    document.querySelector("#progressText").textContent =
+        percentage + "% completed";
+
+    document.querySelector("#progressFill").style.width =
+        percentage + "%";
+
+}
+
+function displayTasks() {
+
+    let list = document.querySelector("#taskList");
+
+    list.innerHTML = "";
+
+    if (tasks.length === 0) {
+
+        list.innerHTML =
+            '<p class="task-empty">No tasks yet. Add your first task!</p>';
+
+    }
+
+    tasks.forEach(function(task, index) {
+
+        let item = document.createElement("div");
+
+        item.className = "task-item";
+
+        let name = document.createElement("span");
+
+        name.className = "task-name";
+
+        name.textContent = task.text;
+
+        if (task.done) {
+            name.classList.add("completed");
+        }
+
+        let actions = document.createElement("div");
+
+        actions.className = "task-actions";
+
+        let completeButton = document.createElement("button");
+
+        completeButton.className = "btn btn-small";
+
+        completeButton.textContent =
+            task.done ? "Undo" : "Complete";
+
+        completeButton.onclick = function() {
+
+            tasks[index].done = !tasks[index].done;
+
+            saveTasks();
+
+            displayTasks();
+
+            showNotification(
+                task.done ? "Task completed!" : "Task marked pending."
+            );
+
+        };
+
+        let editButton = document.createElement("button");
+
+        editButton.className = "btn btn-secondary btn-small";
+
+        editButton.textContent = "Edit";
+
+        editButton.onclick = function() {
+
+            let updated = prompt("Edit your task:", task.text);
+
+            if (updated && updated.trim() !== "") {
+
+                tasks[index].text = updated.trim();
+
+                saveTasks();
+
+                displayTasks();
+
+                showNotification("Task updated!");
+
+            }
+
+        };
+
+        let deleteButton = document.createElement("button");
+
+        deleteButton.className = "btn btn-secondary btn-small";
+
+        deleteButton.textContent = "Delete";
+
+        deleteButton.onclick = function() {
+
+            tasks.splice(index, 1);
+
+            saveTasks();
+
+            displayTasks();
+
+            showNotification("Task deleted!");
+
+        };
+
+        actions.append(
+            completeButton,
+            editButton,
+            deleteButton
+        );
+
+        item.append(name, actions);
+
+        list.appendChild(item);
+
+    });
+
+    updateDashboard();
+
+}
+
+function addTask() {
+
+    let input = document.querySelector("#taskInput");
+
+    let value = input.value.trim();
+
+    if (value === "") {
+
+        showNotification("Please enter a task!");
+
+        return;
+
+    }
+
+    tasks.push({
+        text: value,
+        done: false
+    });
+
+    saveTasks();
+
+    input.value = "";
+
+    displayTasks();
+
+    showNotification("New task added!");
+
+}
+
+displayTasks();
+
+
+/* =========================
+   6. API WORKSPACE
+========================= */
+
+const API = "https://jsonplaceholder.typicode.com/todos";
+
+function status(message) {
+
+    document.querySelector("#apiStatus").textContent = message;
+
+}
+
+function loadTasks() {
+
+    status("Loading tasks...");
+
+    fetch(API + "?_limit=5")
+
+    .then(response => {
+
+        if (!response.ok) {
+            throw new Error("Could not load tasks");
+        }
+
+        return response.json();
+
+    })
+
+    .then(data => {
+
+        let output = document.querySelector("#apiTasks");
+
+        output.innerHTML = "";
+
+        data.forEach(task => {
+
+            let item = document.createElement("div");
+
+            item.className = "task-item";
+
+            item.textContent = task.title;
+
+            output.appendChild(item);
+
+        });
+
+        status("GET successful! Tasks loaded.");
+
+    })
+
+    .catch(error => status("Error: " + error.message));
+
+}
+
+document.querySelector("#apiForm").onsubmit =
+function(event) {
+
+    event.preventDefault();
+
+    let title = document.querySelector("#apiTitle").value.trim();
+
+    if (title === "") return;
+
+    fetch(API, {
+
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+            title: title,
+            completed: false
+        })
+
+    })
+
+    .then(response => {
+
+        if (!response.ok) throw new Error("POST request failed");
+
+        return response.json();
+
+    })
+
+    .then(data => {
+
+        status("POST successful! New task ID: " + data.id);
+
+        document.querySelector("#apiTitle").value = "";
+
+    })
+
+    .catch(error => status("Error: " + error.message));
+
+};
+
+function apiAction(method) {
+
+    let id = 1;
+
+    fetch(API + "/" + id, {
+
+        method: method,
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: method === "PATCH" ?
+            JSON.stringify({completed: true}) : undefined
+
+    })
+
+    .then(response => {
+
+        if (!response.ok) throw new Error("Request failed");
+
+        return response.json();
+
+    })
+
+    .then(() => {
+
+        status(method + " request successful!");
+
+    })
+
+    .catch(error => status("Error: " + error.message));
+
+}
+
+
+/* =========================
+   7. WEB TECHNOLOGY QUIZ
+========================= */
+
+const questions = [
+
+    {
+        q: "Which HTML tag creates a hyperlink?",
+        o: ["<link>", "<a>", "<href>", "<p>"],
+        a: 1
+    },
+
+    {
+        q: "Which CSS property changes text colour?",
+        o: ["background-color", "color", "font-style", "margin"],
+        a: 1
+    },
+
+    {
+        q: "Which JavaScript method selects the first matching CSS selector?",
+        o: ["getElementById()", "querySelector()", "innerHTML", "alert()"],
+        a: 1
+    },
+
+    {
+        q: "Which attribute runs JavaScript when a button is clicked?",
+        o: ["href", "src", "onclick", "class"],
+        a: 2
+    },
+
+    {
+        q: "Which HTML tag is used to create a form?",
+        o: ["<section>", "<form>", "<footer>", "<table>"],
+        a: 1
+    },
+
+    {
+        q: "Which property can change the text inside an HTML element?",
+        o: ["textContent", "font-family", "border", "margin"],
+        a: 0
+    },
+
+    {
+        q: "What does setInterval() do?",
+        o: [
+            "Runs a function once",
+            "Repeats a function at intervals",
+            "Deletes an element",
+            "Creates a form"
+        ],
+        a: 1
+    },
+
+    {
+        q: "What is the purpose of a CSS media query?",
+        o: [
+            "Connect to an API",
+            "Create a JavaScript function",
+            "Make a responsive layout",
+            "Create a hyperlink"
+        ],
+        a: 2
+    },
+
+    {
+        q: "Which method cancels a pending setTimeout()?",
+        o: ["clearTimeout()", "clearInterval()", "stopTimer()", "cancel()"],
+        a: 0
+    },
+
+    {
+        q: "Which HTTP method is generally used to retrieve API data?",
+        o: ["POST", "DELETE", "PATCH", "GET"],
+        a: 3
+    }
+
+];
+
+let current = 0;
+
+let score = 0;
+
+let answered = false;
+
+function showQuestion() {
+
+    answered = false;
+
+    let question = questions[current];
+
+    document.querySelector("#questionNumber").textContent =
+        "Question " + (current + 1) + " of " + questions.length;
+
+    document.querySelector("#questionText").textContent =
+        question.q;
+
+    document.querySelector("#feedback").textContent = "";
+
+    document.querySelector("#quizScore").textContent =
+        "Score: " + score;
+
+    let options = document.querySelector("#options");
+
+    options.innerHTML = "";
+
+    question.o.forEach(function(option, index) {
+
+        let button = document.createElement("button");
+
+        button.className = "option";
+
+        button.textContent = option;
+
+        button.onclick = function() {
+
+            checkAnswer(index);
+
+        };
+
+        options.appendChild(button);
+
+    });
+
+    document.querySelector("#nextButton").disabled = true;
+
+}
+
+function checkAnswer(selected) {
+
+    if (answered) return;
+
+    answered = true;
+
+    let correct = questions[current].a;
+
+    let buttons = document.querySelectorAll(".option");
+
+    if (selected === correct) {
+
+        score++;
+
+        document.querySelector("#feedback").textContent =
+            "Correct! Well done!";
+
+    } else {
+
+        document.querySelector("#feedback").textContent =
+            "Incorrect! Correct answer: " +
+            questions[current].o[correct];
+
+    }
+
+    buttons.forEach(function(button) {
+
+        button.disabled = true;
+
+    });
+
+    document.querySelector("#quizScore").textContent =
+        "Score: " + score;
+
+    document.querySelector("#scoreStat").textContent =
+        score + "/" + questions.length;
+
+    document.querySelector("#nextButton").disabled = false;
+
+}
+
+function nextQuestion() {
+
+    if (!answered) {
+
+        document.querySelector("#feedback").textContent =
+            "Please select an answer first!";
+
+        return;
+
+    }
+
+    current++;
+
+    if (current < questions.length) {
+
+        showQuestion();
+
+    } else {
+
+        document.querySelector("#questionNumber").textContent =
+            "Quiz Completed!";
+
+        document.querySelector("#questionText").textContent =
+            "You have completed the Web Technology Quiz!";
+
+        document.querySelector("#options").innerHTML = "";
+
+        document.querySelector("#feedback").textContent =
+            "Your final score is " + score +
+            " out of " + questions.length + ".";
+
+        document.querySelector("#nextButton").disabled = true;
+
+        showNotification("Quiz completed!");
+
+    }
+
+}
+
+function restartQuiz() {
+
+    current = 0;
+
+    score = 0;
+
+    document.querySelector("#scoreStat").textContent =
+        "0/10";
+
+    showQuestion();
+
+}
+
+showQuestion();
+
+
+/* =========================
+   8. REMINDER
+========================= */
+
+let reminderTimer;
+
+function setReminder() {
+
+    let seconds = Number(
+        document.querySelector("#reminder").value
+    );
+
+    if (!Number.isInteger(seconds) || seconds <= 0) {
+
+        document.querySelector("#reminderStatus").textContent =
+            "Enter a valid number of seconds.";
+
+        return;
+
+    }
+
+    clearTimeout(reminderTimer);
+
+    document.querySelector("#reminderStatus").textContent =
+        "Reminder set for " + seconds + " seconds.";
+
+    reminderTimer = setTimeout(function() {
+
+        showNotification("Reminder! Time to check your work!");
+
+        document.querySelector("#reminderStatus").textContent =
+            "Your reminder is complete!";
+
+    }, seconds * 1000);
+
+}
+
+function cancelReminder() {
+
+    clearTimeout(reminderTimer);
+
+    document.querySelector("#reminderStatus").textContent =
+        "Reminder cancelled.";
+
+}
+
+
+/* =========================
+   9. ACTIVITY TRACKER
+========================= */
+
+let activityTimer = null;
+
+let count = 0;
+
+function updateActivity() {
+
+    document.querySelector("#activityMessage").textContent =
+        count + " seconds";
+
+}
+
+function startActivity() {
+
+    if (activityTimer !== null) return;
+
+    activityTimer = setInterval(function() {
+
+        count++;
+
+        updateActivity();
+
+    }, 1000);
+
+    showNotification("Activity started!");
+
+}
+
+function stopActivity() {
+
+    if (activityTimer !== null) {
+
+        clearInterval(activityTimer);
+
+        activityTimer = null;
+
+        showNotification("Activity stopped!");
+
+    }
+
+}
+
+function resetActivity() {
+
+    clearInterval(activityTimer);
+
+    activityTimer = null;
+
+    count = 0;
+
+    updateActivity();
+
+    showNotification("Activity timer reset!");
+
+}
+
+
+/* =========================
+   10. CONTACT FORM
+========================= */
+
+document.querySelector("#contactForm").onsubmit =
+function(event) {
+
+    event.preventDefault();
+
+    let name = document.querySelector("#contactName").value;
+
+    document.querySelector("#contactResult").textContent =
+        "Thank you, " + name + "! Your message has been received.";
+
+    showNotification("Message submitted!");
+
+    this.reset();
+
+};
+
+</script>
+
+</body>
+</html>
